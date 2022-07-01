@@ -9,8 +9,8 @@
 --    Example: fk_AdminUser_email_User_email
 
 -- ###################### Notes ######################
--- Note: Change the table name to the naming convention
-
+-- Note: Change the table name to the naming convention (TODO: the TABLE in report doesn't 100% follow the naming convention)
+-- TODO: should also test the code in sql (ex: SQLite) and make sure it runs
 
 CREATE TABLE "User" (
   "email" varchar(250) NOT NULL,
@@ -19,7 +19,8 @@ CREATE TABLE "User" (
   "last_name" varchar(250) NOT NULL,
   "nickname" varchar(250) NOT NULL,
   "postal_code" varchar(250) NOT NULL,
-  PRIMARY KEY ("email")
+  PRIMARY KEY ("email"),
+  FOREIGN KEY ("postal_code") REFERENCES "LocationLookup" ("postal_code")
 );
 
 CREATE TABLE "Item" (
@@ -33,15 +34,14 @@ CREATE TABLE "Item" (
   "condition" varchar(250) NOT NULL,
   "description" varchar(250) NULL,
   "listing_url" varchar(250) NOT NULL,
-  PRIMARY KEY ("item_no"), 
+  PRIMARY KEY ("item_no")
 );
 
 
--- TODO: couldn't find the entity in EER
 CREATE TABLE "GamePlatformMap" (
-  "lister_email" varchar(250) NOT NULL,
-  "title" varchar(250) NOT NULL,
-  -- PRIMARY KEY (email), 
+  "game_type" varchar(250) NOT NULL,
+  "platform" varchar(250) NOT NULL,
+  PRIMARY KEY ("game_type")
 );
 
 CREATE TABLE "Trade" (
@@ -57,7 +57,7 @@ CREATE TABLE "Trade" (
   FOREIGN KEY ("proposer_email") REFERENCES "User" ("email"),
   FOREIGN KEY ("counterparty_email") REFERENCES "User" ("email"),
   FOREIGN KEY ("proposer_item_no") REFERENCES "Item" ("item_no"),
-  FOREIGN KEY ("counterparty_item_no") REFERENCES "Item" ("item_no"),
+  FOREIGN KEY ("counterparty_item_no") REFERENCES "Item" ("item_no")
 );
 
 CREATE TABLE "LocationLookup" (
@@ -66,20 +66,21 @@ CREATE TABLE "LocationLookup" (
   "state" varchar(250) NOT NULL,
   "latitude" float(8) NOT NULL,
   "longitude" float(8) NOT NULL,
-  -- PRIMARY KEY (email), 
+  PRIMARY KEY ("postal_code")
 );
 
-CREATE TABLE ResponseColorLookup (
-  response_lower_range float(8) NOT NULL,
-  response_upper_range float(8) NOT NULL,
-  text_color varchar(250) NOT NULL,
-  -- PRIMARY KEY (email), 
+-- TODO: do we need a primary key here?
+CREATE TABLE "ResponseColorLookup" (
+  "response_lower_range" float(8) NOT NULL,
+  "response_upper_range" float(8) NOT NULL,
+  "text_color" varchar(250) NOT NULL,
+  PRIMARY KEY ("response_lower_range", "response_upper_range")
 );
 
 
-CREATE TABLE RankLookup (
-  trade_lower_range int(16) NOT NULL,
-  trade_upper_range int(16) NOT NULL,
-  rank_label varchar(250) NOT NULL,
-  -- PRIMARY KEY (email), 
+CREATE TABLE "RankLookup" (
+  "trade_lower_range" int(16) NOT NULL,
+  "trade_upper_range" int(16) NOT NULL,
+  "rank_label" varchar(250) NOT NULL,
+  PRIMARY KEY ("trade_lower_range", "trade_upper_range")
 );
