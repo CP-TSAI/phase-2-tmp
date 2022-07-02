@@ -22,7 +22,8 @@ CREATE TABLE "User" (
   "postal_code" varchar(250) NOT NULL,
   PRIMARY KEY ("email"),
   UNIQUE("email"),
-  FOREIGN KEY ("postal_code") REFERENCES "LocationLookup" ("postal_code")
+  FOREIGN KEY ("postal_code") 
+    REFERENCES "LocationLookup" ("postal_code")
 );
 
 CREATE TABLE "Item" (
