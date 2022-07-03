@@ -13,17 +13,16 @@
 -- Note: Change the table name to the naming convention (TODO: the TABLE in report doesn't 100% follow the naming convention)
 -- run the file with SQLite: `sqlite3 < schema.sql`
 
-CREATE TABLE "User" (
-  "email" varchar(250) NOT NULL,
-  "password" varchar(250) NOT NULL,
-  "first_name" varchar(250) NOT NULL,
-  "last_name" varchar(250) NOT NULL,
-  "nickname" varchar(250) NOT NULL,
-  "postal_code" varchar(250) NOT NULL,
-  PRIMARY KEY ("email"),
-  UNIQUE("email"),
-  FOREIGN KEY ("postal_code") 
-    REFERENCES "LocationLookup" ("postal_code")
+CREATE TABLE `User` (
+  email varchar(250) NOT NULL,
+  `password` varchar(250) NOT NULL,
+  first_name varchar(250) NOT NULL,
+  last_name varchar(250) NOT NULL,
+  nickname varchar(250) NOT NULL,
+  postal_code varchar(250) NOT NULL,
+  PRIMARY KEY (email),
+  UNIQUE(nickname),
+  FOREIGN KEY (postal_code) REFERENCES LocationLookup (postal_code)
 );
 
 CREATE TABLE "Item" (
@@ -40,7 +39,7 @@ CREATE TABLE "Item" (
   PRIMARY KEY ("item_no"),
   UNIQUE("item_no"),
   FOREIGN KEY ("lister_email") REFERENCES "User" ("email"),
-  FOREIGN KEY ("game_type") REFERENCES "GamePlatformMap" ("game_type")
+  FOREIGN KEY ("game_type") REFERENCES "GamePlatformMap" ("game_type");
 );
 
 
@@ -48,7 +47,7 @@ CREATE TABLE "GamePlatformMap" (
   "game_type" varchar(250) NOT NULL,
   "platform" varchar(250) NOT NULL,
   PRIMARY KEY ("game_type"),
-  UNIQUE("game_type")
+  UNIQUE("game_type");
 );
 
 CREATE TABLE "Trade" (
@@ -65,7 +64,7 @@ CREATE TABLE "Trade" (
   FOREIGN KEY ("proposer_email") REFERENCES "User" ("email"),
   FOREIGN KEY ("counterparty_email") REFERENCES "User" ("email"),
   FOREIGN KEY ("proposer_item_no") REFERENCES "Item" ("item_no"),
-  FOREIGN KEY ("counterparty_item_no") REFERENCES "Item" ("item_no")
+  FOREIGN KEY ("counterparty_item_no") REFERENCES "Item" ("item_no");
 );
 
 CREATE TABLE "LocationLookup" (
