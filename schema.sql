@@ -25,29 +25,27 @@ CREATE TABLE `User` (
   FOREIGN KEY (postal_code) REFERENCES LocationLookup (postal_code)
 );
 
-CREATE TABLE "Item" (
-  "lister_email" varchar(250) NOT NULL,
-  "title" varchar(250) NOT NULL,
-  "item_no" int(16) NOT NULL, -- Note: in SQLite an int primary key will autoincrement by itself, so no need to use "AUTO_INCREMENT"
-  "game_type" varchar(250) NOT NULL,
-  "number_of_cards" int(16) NULL,
-  "platform" varchar(250) NULL,
-  "media" varchar(250) NULL,
-  "condition" varchar(250) NOT NULL,
-  "description" varchar(250) DEFAULT NULL,
-  "listing_url" varchar(250) NOT NULL,
-  PRIMARY KEY ("item_no"),
-  UNIQUE("item_no"),
-  FOREIGN KEY ("lister_email") REFERENCES "User" ("email"),
-  FOREIGN KEY ("game_type") REFERENCES "GamePlatformMap" ("game_type");
+CREATE TABLE Item (
+  lister_email varchar(250) NOT NULL,
+  title varchar(250) NOT NULL,
+  item_no int(16) NOT NULL, -- Note: in SQLite an int primary key will autoincrement by itself, so no need to use "AUTO_INCREMENT"
+  game_type varchar(250) NOT NULL,
+  number_of_cards int(16) NULL,
+  platform varchar(250) NULL,
+  media varchar(250) NULL,
+  condition varchar(250) NOT NULL,
+  description varchar(250) NULL,
+  listing_url varchar(250) NOT NULL,
+  PRIMARY KEY (item_no),
+  FOREIGN KEY (lister_email) REFERENCES `User` (email),
+  FOREIGN KEY (game_type) REFERENCES GamePlatformMap (game_type);
 );
 
 
-CREATE TABLE "GamePlatformMap" (
-  "game_type" varchar(250) NOT NULL,
-  "platform" varchar(250) NOT NULL,
-  PRIMARY KEY ("game_type"),
-  UNIQUE("game_type");
+CREATE TABLE GamePlatformMap (
+  game_type varchar(250) NOT NULL,
+  platform varchar(250) NOT NULL,
+  PRIMARY KEY (game_type),
 );
 
 CREATE TABLE "Trade" (
