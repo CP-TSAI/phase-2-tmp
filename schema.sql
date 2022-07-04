@@ -1,17 +1,4 @@
--- ################ Naming Convention ################
--- Entity/Table Names (singular noun): UpperCamelCase
---    Example: RegularUser  (note: without the ‘s’ singular)
--- Attribute Names: lowercase_underscore
---    Example: start_date
--- Primary Surrogate Keys: tableNameID
---    Example: userID  (where ‘ID’ is capitalized)
--- Foreign Keys: FK_ChildTable_childColumn_ParentTable_parentColumn     
---    Example: fk_AdminUser_email_User_email
-
-
--- ###################### Notes ######################
--- Note: Change the table name to the naming convention (TODO: the TABLE in report doesn't 100% follow the naming convention)
--- run the file with SQLite: `sqlite3 < schema.sql`
+-- To check with SQLite3, run command: `$ sqlite3 < schema.sql`
 
 CREATE TABLE `User` (
   Email varchar(250) NOT NULL,
@@ -42,10 +29,10 @@ CREATE TABLE Item (
 );
 
 
-CREATE TABLE GamePlatformMap (
+CREATE TABLE Game_Platform_Map (
   Game_type varchar(250) NOT NULL,
   platform varchar(250) NOT NULL,
-  PRIMARY KEY (Game_type),
+  PRIMARY KEY (Game_type)
 );
 
 CREATE TABLE Trade (
@@ -65,16 +52,23 @@ CREATE TABLE Trade (
   FOREIGN KEY (counterparty_item_no) REFERENCES Item (item_no)
 );
 
-CREATE TABLE LocationLookup (
+CREATE TABLE Location_Lookup (
   Postal_code varchar(250) NOT NULL,
   city varchar(250) NOT NULL,
   state varchar(250) NOT NULL,
   latitude float(8) NOT NULL,
   longitude float(8) NOT NULL,
-  PRIMARY KEY (Postal_code),
+  PRIMARY KEY (Postal_code)
 );
 
-CREATE TABLE ResponseColorLookup (
+CREATE TABLE Distance_color_lookup (
+  distance_lower_range float(8) NOT NULL,
+  distance_upper_range float(8) NOT NULL,
+  background_color varchar(250) NOT NULL,
+  PRIMARY KEY (distance_lower_range, distance_upper_range)
+);
+
+CREATE TABLE Response_color_lookup (
   Response_lower_range float(8) NOT NULL,
   Response_upper_range float(8) NOT NULL,
   text_color varchar(250) NOT NULL,
@@ -82,7 +76,7 @@ CREATE TABLE ResponseColorLookup (
 );
 
 
-CREATE TABLE RankLookup (
+CREATE TABLE Rank_lookup (
   Trade_lower_range int(16) NOT NULL,
   Trade_upper_range int(16) NOT NULL,
   rank_label varchar(250) NOT NULL,
