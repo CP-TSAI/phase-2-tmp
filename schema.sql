@@ -9,7 +9,7 @@ CREATE TABLE `User` (
   postal_code varchar(250) NOT NULL,
   PRIMARY KEY (Email),
   UNIQUE(nickname),
-  FOREIGN KEY (postal_code) REFERENCES LocationLookup (postal_code)
+  FOREIGN KEY (postal_code) REFERENCES Location_Lookup (postal_code)
 );
 
 CREATE TABLE Item (
@@ -25,7 +25,7 @@ CREATE TABLE Item (
   listing_url varchar(250) NOT NULL,
   PRIMARY KEY (Item_no),
   FOREIGN KEY (lister_email) REFERENCES `User` (email),
-  FOREIGN KEY (game_type) REFERENCES GamePlatformMap (game_type)
+  FOREIGN KEY (game_type) REFERENCES Game_Platform_Map (game_type)
 );
 
 
