@@ -20,7 +20,7 @@ CREATE TABLE Platform (
 CREATE TABLE Item (
   lister_email varchar(250) NOT NULL,
   title varchar(250) NOT NULL,
-  item_no int(16) NOT NULL, -- Note: in SQLite an int primary key will autoincrement by itself, so no need to use "AUTO_INCREMENT"
+  item_no int(16) NOT NULL,
   condition varchar(250) NOT NULL,
   description varchar(250) NULL,
   listing_url varchar(250) NOT NULL,
@@ -99,7 +99,7 @@ CREATE TABLE Trade (
   accept_reject_date datetime NULL,
   status varchar(250) NOT NULL,
   trade_history_link varchar(250) NOT NULL,
-  auto_trade_id int(16) NOT NULL, -- Note: in SQLite an int primary key will autoincrement by itself, so no need to use "AUTO_INCREMENT"
+  auto_trade_id int(16) NOT NULL,
   PRIMARY KEY (proposer_email, counterparty_email, proposer_item_no, counterparty_item_no),
   FOREIGN KEY (proposer_email) REFERENCES Item_Proposed (lister_email),
   FOREIGN KEY (counterparty_email) REFERENCES Item_Desired (lister_email),
@@ -117,21 +117,21 @@ CREATE TABLE Location_Lookup (
   FOREIGN KEY (postal_code) REFERENCES `User` (postal_code)
 );
 
-CREATE TABLE Distance_color_lookup ( -- 2
+CREATE TABLE Distance_color_lookup (
   distance_lower_range float(8) NOT NULL,
   distance_upper_range float(8) NOT NULL,
   background_color varchar(250) NOT NULL,
   PRIMARY KEY (distance_lower_range, distance_upper_range)
 );
 
-CREATE TABLE Response_color_lookup ( -- 3
+CREATE TABLE Response_color_lookup (
   response_lower_range float(8) NOT NULL,
   response_upper_range float(8) NOT NULL,
   text_color varchar(250) NOT NULL,
   PRIMARY KEY (response_lower_range, response_upper_range)
 );
 
-CREATE TABLE Rank_lookup ( --4
+CREATE TABLE Rank_lookup (
   trade_lower_range int(16) NOT NULL,
   trade_upper_range int(16) NOT NULL,
   rank_label varchar(250) NOT NULL,
