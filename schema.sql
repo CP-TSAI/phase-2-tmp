@@ -74,22 +74,6 @@ CREATE TABLE Item_Video_Game (
   FOREIGN KEY (platform) REFERENCES Platform (`name`)
 );
 
-CREATE TABLE Item_Desired (
-  lister_email varchar(250) NOT NULL,
-  item_no int(16) NOT NULL,
-  PRIMARY KEY (item_no, lister_email),
-  FOREIGN KEY (item_no) REFERENCES Item (item_no),
-  FOREIGN KEY (lister_email) REFERENCES `User` (email)
-);
-
-CREATE TABLE Item_Proposed (
-  lister_email varchar(250) NOT NULL,
-  item_no int(16) NOT NULL,
-  PRIMARY KEY (item_no, lister_email),
-  FOREIGN KEY (item_no) REFERENCES Item (item_no),
-  FOREIGN KEY (lister_email) REFERENCES `User` (email)
-);
-
 CREATE TABLE Trade (
   proposer_email varchar(250) NOT NULL,
   counterparty_email varchar(250) NOT NULL,
