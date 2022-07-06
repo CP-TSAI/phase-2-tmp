@@ -1,4 +1,5 @@
 -- To check with SQLite3, run command: `$ sqlite3 < schema.sql`
+-- What do we do about attributes / tables that show up in the lookup tables in our report but not in the EER mapping? -JA
 
 CREATE TABLE `User` (
   email varchar(250) NOT NULL,
@@ -10,6 +11,11 @@ CREATE TABLE `User` (
   PRIMARY KEY (email),
   UNIQUE(nickname),
   FOREIGN KEY (postal_code) REFERENCES Location_Lookup (postal_code)
+);
+
+CREATE TABLE Platform (
+  `name` varchar(250) NOT NULL,
+  PRIMARY KEY (`name`)
 );
 
 CREATE TABLE Item (
@@ -103,17 +109,17 @@ CREATE TABLE Trade (
   proposed_date datetime NOT NULL,
   accept_reject_date datetime NULL,
   status varchar(250) NOT NULL,
-  trade_history_link varchar(250) NOT NULL,
+  trade_history_link varchar(250) NOT NULL, -- what do we do if we delete the auto_trade_id attribute below? Since we don't need it anymore - JA
   auto_trade_id int(16) NOT NULL, -- Note: in SQLite an int primary key will autoincrement by itself, so no need to use "AUTO_INCREMENT"
-  PRIMARY KEY (auto_trade_id),
-  FOREIGN KEY (proposer_email) REFERENCES `User` (email),
-  FOREIGN KEY (counterparty_email) REFERENCES `User` (email),
-  FOREIGN KEY (proposer_item_no) REFERENCES Item (item_no),
-  FOREIGN KEY (counterparty_item_no) REFERENCES Item (item_no)
+  PRIMARY KEY (proposer_email, counterparty_email, proposer_item_no, counterparty_item_no),
+  FOREIGN KEY (proposer_email) REFERENCES Item_Proposed (lister_email),
+  FOREIGN KEY (counterparty_email) REFERENCES Item_Desired (lister_email),
+  FOREIGN KEY (proposer_item_no) REFERENCES Item_Proposed (item_no),
+  FOREIGN KEY (counterparty_item_no) REFERENCES Item_Desired (item_no)
 );
 
-CREATE TABLE Location_Lookup (
-  postal_code varchar(250) NOT NULL,
+CREATE TABLE Location_Lookup ( -- 1. this table and the tables number 1-4 down here below are not shown in the EER mapping -JA
+  postal_code varchar(250) NOT NULL, -- (continued from above) Does this location_lookup table represent the postal_code table? - JA
   city varchar(250) NOT NULL,
   state varchar(250) NOT NULL,
   latitude float(8) NOT NULL,
@@ -121,22 +127,21 @@ CREATE TABLE Location_Lookup (
   PRIMARY KEY (postal_code)
 );
 
-CREATE TABLE Distance_color_lookup (
+CREATE TABLE Distance_color_lookup ( -- 2
   distance_lower_range float(8) NOT NULL,
   distance_upper_range float(8) NOT NULL,
   background_color varchar(250) NOT NULL,
   PRIMARY KEY (distance_lower_range, distance_upper_range)
 );
 
-CREATE TABLE Response_color_lookup (
+CREATE TABLE Response_color_lookup ( -- 3
   response_lower_range float(8) NOT NULL,
   response_upper_range float(8) NOT NULL,
   text_color varchar(250) NOT NULL,
   PRIMARY KEY (response_lower_range, response_upper_range)
 );
 
-
-CREATE TABLE Rank_lookup (
+CREATE TABLE Rank_lookup ( --4
   trade_lower_range int(16) NOT NULL,
   trade_upper_range int(16) NOT NULL,
   rank_label varchar(250) NOT NULL,
