@@ -1,5 +1,4 @@
 -- To check with SQLite3, run command: `$ sqlite3 < schema.sql`
--- What do we do about attributes / tables that show up in the lookup tables in our report but not in the EER mapping? -JA
 
 CREATE TABLE `User` (
   email varchar(250) NOT NULL,
@@ -22,22 +21,17 @@ CREATE TABLE Item (
   lister_email varchar(250) NOT NULL,
   title varchar(250) NOT NULL,
   item_no int(16) NOT NULL, -- Note: in SQLite an int primary key will autoincrement by itself, so no need to use "AUTO_INCREMENT"
-  -- game_type varchar(250) NOT NULL, --delete?
-  -- number_of_cards int(16) NULL, --delete?
-  -- platform varchar(250) NULL, --delete?
-  -- media varchar(250) NULL, --delete + all the above because of the new separate tables? -JA
   condition varchar(250) NOT NULL,
   description varchar(250) NULL,
   listing_url varchar(250) NOT NULL,
   PRIMARY KEY (item_no, lister_email),
   FOREIGN KEY (lister_email) REFERENCES `User` (email)
-  -- FOREIGN KEY (game_type) REFERENCES Game_Platform_Map (game_type) --delete since game_type is removed?
 );
 
 CREATE TABLE Item_Collectable_Card_Game (
   lister_email varchar(250) NOT NULL,
   item_no int(16) NOT NULL,
-  number_of_cards int(16) NULL, -- shouldn't this be "NOT NULL"?
+  number_of_cards int(16) NOT NULL,
   PRIMARY KEY (item_no, lister_email),
   FOREIGN KEY (item_no) REFERENCES Item (item_no),
   FOREIGN KEY (lister_email) REFERENCES `User` (email)
@@ -62,7 +56,7 @@ CREATE TABLE Item_Playing_Card_Game (
 CREATE TABLE Item_Computer_Game (
   lister_email varchar(250) NOT NULL,
   item_no int(16) NOT NULL,
-  platform varchar(250) NULL,  -- shouldn't this be "NOT NULL"?
+  platform varchar(250) NOT NULL,
   PRIMARY KEY (item_no, lister_email),
   FOREIGN KEY (item_no) REFERENCES Item (item_no),
   FOREIGN KEY (lister_email) REFERENCES `User` (email),
@@ -72,8 +66,8 @@ CREATE TABLE Item_Computer_Game (
 CREATE TABLE Item_Video_Game (
   lister_email varchar(250) NOT NULL,
   item_no int(16) NOT NULL,
-  platform varchar(250) NULL, -- shouldn't this be "NOT NULL"?
-  media varchar(250) NULL,    -- shouldn't this be "NOT NULL"?
+  platform varchar(250) NOT NULL,
+  media varchar(250) NOT NULL,
   PRIMARY KEY (item_no, lister_email, platform),
   FOREIGN KEY (item_no) REFERENCES Item (item_no),
   FOREIGN KEY (lister_email) REFERENCES `User` (email),
@@ -96,13 +90,6 @@ CREATE TABLE Item_Proposed (
   FOREIGN KEY (lister_email) REFERENCES `User` (email)
 );
 
--- Should we delete this since we already have subclass item table?
--- CREATE TABLE Game_Platform_Map (
---   game_type varchar(250) NOT NULL,
---   platform varchar(250) NOT NULL,
---   PRIMARY KEY (game_type)
--- );
-
 CREATE TABLE Trade (
   proposer_email varchar(250) NOT NULL,
   counterparty_email varchar(250) NOT NULL,
@@ -111,7 +98,7 @@ CREATE TABLE Trade (
   proposed_date datetime NOT NULL,
   accept_reject_date datetime NULL,
   status varchar(250) NOT NULL,
-  trade_history_link varchar(250) NOT NULL, -- what do we do if we delete the auto_trade_id attribute below? Since we don't need it anymore - JA
+  trade_history_link varchar(250) NOT NULL,
   auto_trade_id int(16) NOT NULL, -- Note: in SQLite an int primary key will autoincrement by itself, so no need to use "AUTO_INCREMENT"
   PRIMARY KEY (proposer_email, counterparty_email, proposer_item_no, counterparty_item_no),
   FOREIGN KEY (proposer_email) REFERENCES Item_Proposed (lister_email),
@@ -120,8 +107,8 @@ CREATE TABLE Trade (
   FOREIGN KEY (counterparty_item_no) REFERENCES Item_Desired (item_no)
 );
 
-CREATE TABLE Location_Lookup ( -- 1. this table and the tables number 1-4 down here below are not shown in the EER mapping -JA
-  postal_code varchar(250) NOT NULL, -- (continued from above) Does this location_lookup table represent the postal_code table? - JA
+CREATE TABLE Location_Lookup (
+  postal_code varchar(250) NOT NULL,
   city varchar(250) NOT NULL,
   state varchar(250) NOT NULL,
   latitude float(8) NOT NULL,
