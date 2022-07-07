@@ -24,43 +24,53 @@ CREATE TABLE Item (
   condition varchar(250) NOT NULL,
   description varchar(250) NULL,
   listing_url varchar(250) NOT NULL,
-  PRIMARY KEY (item_no),
+  PRIMARY KEY (item_no, lister_email),
   FOREIGN KEY (lister_email) REFERENCES `User` (email)
 );
 
 CREATE TABLE Item_Collectable_Card_Game (
+  lister_email varchar(250) NOT NULL,
   item_no int(16) NOT NULL,
   number_of_cards int(16) NOT NULL,
-  PRIMARY KEY (item_no),
-  FOREIGN KEY (item_no) REFERENCES Item (item_no)
+  PRIMARY KEY (item_no, lister_email),
+  FOREIGN KEY (item_no) REFERENCES Item (item_no),
+  FOREIGN KEY (lister_email) REFERENCES `User` (email)
 );
 
 CREATE TABLE Item_Board_Game (
+  lister_email varchar(250) NOT NULL,
   item_no int(16) NOT NULL,
-  PRIMARY KEY (item_no),
-  FOREIGN KEY (item_no) REFERENCES Item (item_no)
+  PRIMARY KEY (item_no, lister_email),
+  FOREIGN KEY (item_no) REFERENCES Item (item_no),
+  FOREIGN KEY (lister_email) REFERENCES `User` (email)
 );
 
 CREATE TABLE Item_Playing_Card_Game (
+  lister_email varchar(250) NOT NULL,
   item_no int(16) NOT NULL,
-  PRIMARY KEY (item_no),
-  FOREIGN KEY (item_no) REFERENCES Item (item_no)
+  PRIMARY KEY (item_no, lister_email),
+  FOREIGN KEY (item_no) REFERENCES Item (item_no),
+  FOREIGN KEY (lister_email) REFERENCES `User` (email)
 );
 
 CREATE TABLE Item_Computer_Game (
+  lister_email varchar(250) NOT NULL,
   item_no int(16) NOT NULL,
   platform varchar(250) NOT NULL,
-  PRIMARY KEY (item_no),
+  PRIMARY KEY (item_no, lister_email),
   FOREIGN KEY (item_no) REFERENCES Item (item_no),
+  FOREIGN KEY (lister_email) REFERENCES `User` (email),
   FOREIGN KEY (platform) REFERENCES Platform (`name`)
 );
 
 CREATE TABLE Item_Video_Game (
+  lister_email varchar(250) NOT NULL,
   item_no int(16) NOT NULL,
   platform varchar(250) NOT NULL,
   media varchar(250) NOT NULL,
-  PRIMARY KEY (item_no, platform),
+  PRIMARY KEY (item_no, lister_email, platform),
   FOREIGN KEY (item_no) REFERENCES Item (item_no),
+  FOREIGN KEY (lister_email) REFERENCES `User` (email),
   FOREIGN KEY (platform) REFERENCES Platform (`name`)
 );
 
