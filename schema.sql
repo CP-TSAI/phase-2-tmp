@@ -24,53 +24,43 @@ CREATE TABLE Item (
   condition varchar(250) NOT NULL,
   description varchar(250) NULL,
   listing_url varchar(250) NOT NULL,
-  PRIMARY KEY (item_no, lister_email),
+  PRIMARY KEY (item_no),
   FOREIGN KEY (lister_email) REFERENCES `User` (email)
 );
 
 CREATE TABLE Item_Collectable_Card_Game (
-  lister_email varchar(250) NOT NULL,
   item_no int(16) NOT NULL,
   number_of_cards int(16) NOT NULL,
-  PRIMARY KEY (item_no, lister_email),
-  FOREIGN KEY (item_no) REFERENCES Item (item_no),
-  FOREIGN KEY (lister_email) REFERENCES `User` (email)
+  PRIMARY KEY (item_no),
+  FOREIGN KEY (item_no) REFERENCES Item (item_no)
 );
 
 CREATE TABLE Item_Board_Game (
-  lister_email varchar(250) NOT NULL,
   item_no int(16) NOT NULL,
-  PRIMARY KEY (item_no, lister_email),
-  FOREIGN KEY (item_no) REFERENCES Item (item_no),
-  FOREIGN KEY (lister_email) REFERENCES `User` (email)
+  PRIMARY KEY (item_no),
+  FOREIGN KEY (item_no) REFERENCES Item (item_no)
 );
 
 CREATE TABLE Item_Playing_Card_Game (
-  lister_email varchar(250) NOT NULL,
   item_no int(16) NOT NULL,
-  PRIMARY KEY (item_no, lister_email),
-  FOREIGN KEY (item_no) REFERENCES Item (item_no),
-  FOREIGN KEY (lister_email) REFERENCES `User` (email)
+  PRIMARY KEY (item_no),
+  FOREIGN KEY (item_no) REFERENCES Item (item_no)
 );
 
 CREATE TABLE Item_Computer_Game (
-  lister_email varchar(250) NOT NULL,
   item_no int(16) NOT NULL,
   platform varchar(250) NOT NULL,
-  PRIMARY KEY (item_no, lister_email),
+  PRIMARY KEY (item_no),
   FOREIGN KEY (item_no) REFERENCES Item (item_no),
-  FOREIGN KEY (lister_email) REFERENCES `User` (email),
   FOREIGN KEY (platform) REFERENCES Platform (`name`)
 );
 
 CREATE TABLE Item_Video_Game (
-  lister_email varchar(250) NOT NULL,
   item_no int(16) NOT NULL,
   platform varchar(250) NOT NULL,
   media varchar(250) NOT NULL,
-  PRIMARY KEY (item_no, lister_email, platform),
+  PRIMARY KEY (item_no, platform),
   FOREIGN KEY (item_no) REFERENCES Item (item_no),
-  FOREIGN KEY (lister_email) REFERENCES `User` (email),
   FOREIGN KEY (platform) REFERENCES Platform (`name`)
 );
 
@@ -85,10 +75,10 @@ CREATE TABLE Trade (
   trade_history_link varchar(250) NOT NULL,
   auto_trade_id int(16) NOT NULL,
   PRIMARY KEY (proposer_email, counterparty_email, proposer_item_no, counterparty_item_no),
-  FOREIGN KEY (proposer_email) REFERENCES Item_Proposed (lister_email),
-  FOREIGN KEY (counterparty_email) REFERENCES Item_Desired (lister_email),
-  FOREIGN KEY (proposer_item_no) REFERENCES Item_Proposed (item_no),
-  FOREIGN KEY (counterparty_item_no) REFERENCES Item_Desired (item_no)
+  FOREIGN KEY (proposer_email) REFERENCES `User` (email),
+  FOREIGN KEY (counterparty_email) REFERENCES `User` (email),
+  FOREIGN KEY (proposer_item_no) REFERENCES Item (item_no),
+  FOREIGN KEY (counterparty_item_no) REFERENCES Item (item_no)
 );
 
 CREATE TABLE Location_Lookup (
